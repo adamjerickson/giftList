@@ -1,0 +1,130 @@
+<head>
+  <title>giftList</title>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
+
+  <!-- Optional theme -->
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap-theme.min.css">
+
+  <!-- Latest compiled and minified JavaScript -->
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.2/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  {{> header}}
+  {{> main}}
+</body>
+
+<template name="header">
+  <div>
+    <div class="topLeft">
+      Icon
+    </div>
+    
+    <div class="topLeft">
+      Didn't work with bootstrap...
+    </div>
+    
+    <div class="topRight">
+      {{loginButtons align="right"}}
+    </div>
+    <div class="clear"/>
+  </div>
+</template>
+
+<template name="main">
+  <div class="container">
+    {{#unless currentUser}} 
+      {{> welcome}}
+    {{/unless}}
+
+    {{#if currentUser}}
+      {{> lists}}
+    {{/if}}
+  </div>
+</template>
+
+<template name="welcome">
+  <h1>Welcome to GiftList</h1>
+  <p>bla bla bla</p>
+  <p>Sign Up</p>
+</template>
+
+<template name="lists">
+  <h1>Lists</h1>
+  <h2>Your Lists</h2>
+  {{#each userLists}}
+    <a class='list' href="#">{{name}}</a>
+    <!-- we're going to need some clicking behavior, but for now just see if we can print it out -->
+    {{> list}}
+    {{> addItem}}
+  {{/each}}
+
+  <h2>Others' Lists</h2>
+  {{#each othersLists}}
+    <a class='list' href="#">{{name}}</a>
+    {{> list}}
+  {{/each}}
+</template>
+
+<template name="list">
+  {{#each items}}
+    {{> item}}
+  {{/each}}
+  
+</template>
+
+<template name="item">
+  <div class="item">
+    {{#unless editing this._id}}
+      <div class="title">{{title}}</div>
+      <div class="description">{{description}}</div>
+      <a href="#" class="edit btn btn-sm-link">Edit</a>
+    {{/unless}}
+    {{#if isLoggedInUser}}
+      {{#if editing this._id}}
+        <input class="editItemTitle form-control" value="{{title}}"/>
+        <textarea class="editItemDescription form-control" placeholder"description">{{description}}</textarea>
+        <a href="#" class="saveItem btn btn-sm btn-primary">Save</a>
+      {{/if}}
+    {{/if}}
+    {{#unless isLoggedInUser}}
+      {{#each purchasers}}
+        <div>{{purchaser}}</div>
+      {{/each}}
+
+      {{#each comments}}
+        {{> comment}}
+      {{/each}}
+      {{> addComment}}
+      <!-- somehow we have to gray this out to show it's purchased if the logged in person isn't the list owner-->
+    {{/unless}}
+  </div>
+</template>
+
+<template name="addItem">
+  <h4>Add</h4>
+  <form id="addItem" >
+    <label class="formGroup" for="inputTitle">
+      <input type="text" name="inputTitle" id="inputTitle" class="form-control" placeholder="title"/>
+      <textarea type="text" name="inputDescription" id="inputDescription" class="form-control" placeholder="decription"/>
+    </label>
+    <input type="button" class="btn btn-primary" value="Add"/>
+  </form>
+</template>
+
+<template name="comment">
+  <p>{{text}} by {{commenter}}</p>
+</template>
+
+<template name="addComment">
+  <form id="addComment">
+    <input name="commentText" id="commentText" class="form-control" placeholder="Have something to say? Type it here."/>
+    <input type="button" value="Add" class="btn btn-primary">
+  </form>
+</template>
+
+<template name="purchaser">
+  <p>{{purchaser}}</p>
+</template>
+

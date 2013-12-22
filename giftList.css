@@ -1,0 +1,14 @@
+/* CSS declarations go here */
+.topLeft {
+  float: left;
+  margin-left: 30px;
+  margin-top: 10px;
+}
+.topRight {
+  float:right;
+  margin-right: 30px;
+  margin-top: 10px;
+}
+.clear {
+  clear: both;
+}
